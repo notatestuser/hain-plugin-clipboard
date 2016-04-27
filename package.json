@@ -1,7 +1,7 @@
 {
   "name": "hain-plugin-clipboard",
-  "version": "0.0.2",
-  "description": "Play back clipboard history",
+  "version": "0.1.0",
+  "description": "Restore clipboard history",
   "main": "index.js",
   "author": "Luke Plaster",
   "license": "MIT",
