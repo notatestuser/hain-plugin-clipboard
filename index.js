@@ -41,6 +41,7 @@ module.exports = (context) => {
             id: 'clear',
             payload: 'clear',
             title: 'Clear this list',
+            icon: '#fa fa-trash',
             desc: ''
         }].concat(clips.map((clip, idx) => {
             let sub = clip.substr(0, clipDisplayChars);
