@@ -1,6 +1,6 @@
 {
   "name": "hain-plugin-clipboard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Play back clipboard history",
   "main": "index.js",
   "author": "Luke Plaster",
