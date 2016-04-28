@@ -69,13 +69,17 @@ module.exports = (context) => {
             let title;
             if (clip.elem) {
                 // fuzzy match
-                title = matchutil.makeStringBoldHtml(clip.elem.content, clip.matches);
+                const trimmed = clip.elem.content.trim().substr(0, clipDisplayChars);
+                if (clipDisplayChars === trimmed.length) {
+                    title = trimmed;  // no bold - it looks strange when trimmed
+                } else {
+                    title = matchutil.makeStringBoldHtml(trimmed, clip.matches);
+                }
                 idx = clips.indexOf(clip = clip.elem);
             } else {
                 // normal result
-                title = clip.content;
+                title = clip.content.substr(0, clipDisplayChars);
             }
-            title = title.substr(0, clipDisplayChars);
             if (clipDisplayChars === title.length) {
                 title += '...';
             }
