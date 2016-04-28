@@ -5,7 +5,7 @@
 module.exports = (context) => {
     const app = context.app;
     const toast = context.toast;
-    const logger = context.logger;
+    const matchutil = context.matchutil;
 
     const ncp = require('copy-paste');
     const ago = require('s-ago');
@@ -51,13 +51,30 @@ module.exports = (context) => {
     }
 
     function search(query, res) {
-        res.add([{
-            id: 'clear',
-            payload: 'clear',
-            title: 'Clear this list',
-            icon: '#fa fa-trash',
-            desc: ''
-        }].concat(clips.map((clip, idx) => {
+        const querytrim = query.replace(' ', '');
+        let results;
+        if (querytrim.length) {
+            results = matchutil.fuzzy(clips, querytrim, x => x.content);
+        } else {
+            results = clips;
+            res.add([{
+                id: 'clear',
+                payload: 'clear',
+                title: 'Clear this list',
+                icon: '#fa fa-trash',
+                desc: ''
+            }]);
+        }
+        res.add(results.map((clip, idx) => {
+            let matchDescr;
+            if (clip.elem) {
+                // fuzzy match
+                matchDescr = matchutil.makeStringBoldHtml(clip.elem.content, clip.matches);
+                idx = clips.indexOf(clip = clip.elem);
+            } else {
+                // normal result
+                matchDescr = clip.content;
+            }
             let sub = clip.content.substr(0, clipDisplayChars);
             if (clipDisplayChars === sub.length) {
                 sub += '...';
@@ -65,25 +82,25 @@ module.exports = (context) => {
             return {
                 id: idx,
                 payload: '',
-                title: sub.replace(/\n/g, ''),
+                title: matchDescr.replace(/\n/g, ''),
                 icon: '#fa fa-clipboard',
                 desc: `Copy to clipboard (${abbr(clip.size)} characters, ${ago(clip.time)})`
             };
-        })));
+        }));
     }
 
     function execute(id, payload) {
-        var closeTimeout = 0;
         if (payload === 'clear') {
             clips.length = 0;
             toast.enqueue('Clipboard history cleared!');
-            closeTimeout = 1000;
+            setTimeout(() => {
+                app.close();
+            }, 1000);
         } else {
-            ncp.copy(clips[id].content);
+            ncp.copy(clips[id].content, () => {
+                app.close();
+            });
         }
-        setTimeout(() => {
-            app.close();
-        }, closeTimeout);
     }
 
     return { startup, search, execute };
