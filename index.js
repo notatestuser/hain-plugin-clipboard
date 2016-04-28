@@ -66,23 +66,23 @@ module.exports = (context) => {
             }]);
         }
         res.add(results.map((clip, idx) => {
-            let matchDescr;
+            let title;
             if (clip.elem) {
                 // fuzzy match
-                matchDescr = matchutil.makeStringBoldHtml(clip.elem.content, clip.matches);
+                title = matchutil.makeStringBoldHtml(clip.elem.content, clip.matches);
                 idx = clips.indexOf(clip = clip.elem);
             } else {
                 // normal result
-                matchDescr = clip.content;
+                title = clip.content;
             }
-            let sub = clip.content.substr(0, clipDisplayChars);
-            if (clipDisplayChars === sub.length) {
-                sub += '...';
+            title = title.substr(0, clipDisplayChars);
+            if (clipDisplayChars === title.length) {
+                title += '...';
             }
             return {
                 id: idx,
                 payload: '',
-                title: matchDescr.replace(/\n/g, ''),
+                title: title.replace(/\n/g, ''),
                 icon: '#fa fa-clipboard',
                 desc: `Copy to clipboard (${abbr(clip.size)} characters, ${ago(clip.time)})`
             };
