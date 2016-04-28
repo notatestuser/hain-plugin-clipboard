@@ -15,6 +15,7 @@
     "redirect": "/clipboard "
   },
   "dependencies": {
-    "copy-paste": "^1.1.4"
+    "copy-paste": "^1.1.4",
+    "s-ago": "^1.0.6"
   }
 }
