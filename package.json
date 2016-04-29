@@ -1,21 +1,23 @@
 {
   "name": "hain-plugin-clipboard",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Restore clipboard history",
   "main": "index.js",
   "author": "Luke Plaster",
   "license": "MIT",
   "keywords": [
-    "hain0"
+    "hain-0.1.0"
   ],
   "hain": {
     "prefix": "/clipboard",
     "usage": "type /clipboard to show clipboard history",
     "icon": "#fa fa-clipboard",
-    "redirect": "/clipboard "
+    "redirect": "/clipboard ",
+    "group": "Clipboard History"
   },
   "dependencies": {
     "copy-paste": "^1.2.0",
+    "eskape": "^1.2.0",
     "s-ago": "^1.0.6"
   }
 }
