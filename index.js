@@ -32,6 +32,7 @@ module.exports = (context) => {
     const matchutil = context.matchutil;
 
     const clips = [];
+    let lastClips;  // a shallow copy of `clips`, kept between search/execute
 
     function abbr(num) {
         if (num >= 1000000) {
@@ -71,6 +72,7 @@ module.exports = (context) => {
     function search(query, res) {
         const querytrim = query.replace(' ', '');
         let results;
+        lastClips = clips.concat();  // shallow copy
         if (querytrim.length) {
             results = matchutil.fuzzy(clips, querytrim, x => x.content);
         } else {
@@ -123,13 +125,13 @@ module.exports = (context) => {
 
     function execute(id, payload) {
         if (payload === 'clear') {
-            clips.length = 0;
+            clips.length = lastClips.length = 0;
             toast.enqueue('Clipboard history cleared!');
             setTimeout(() => {
                 app.close();
             }, 1000);
         } else {
-            ncp.copy(clips[id].content, () => {
+            ncp.copy(lastClips[id].content, () => {
                 app.close();
             });
         }
@@ -137,7 +139,7 @@ module.exports = (context) => {
 
     function renderPreview(id, payload, render) {
         if (payload.length) return;
-        render(PREVIEW_HTML(clips[id].content));
+        render(PREVIEW_HTML(lastClips[id].content));
     }
 
     return { startup, search, execute, renderPreview };
