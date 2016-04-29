@@ -106,11 +106,12 @@ module.exports = (context) => {
             title = title.replace(/<b>/gi, '%%B%%');
             title = title.replace(/<\/b>/gi, '%%EB%%');
             title = title.replace(/</g, '&lt;');
+            title = title.replace(/&/g, '&amp;');
             title = title.replace(/%%B%%/g, '<b>');
             title = title.replace(/%%EB%%/g, '</b>');
 
             if (isTrimmed) {
-                title += '...';
+                title += '&hellip;';
             }
             return {
                 id: idx,
