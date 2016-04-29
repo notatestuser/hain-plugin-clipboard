@@ -2,18 +2,36 @@
 
 (function(){
 
+const ncp = require('copy-paste');
+const ago = require('s-ago');
+const eskape = require('eskape');
+
+const MAX_CLIPS = 30;
+const POLL_INTERVAL_MS = 3000;
+const CLIP_DISPLAY_MAX_CHARS = 100;
+const PREVIEW_HTML = (text) => eskape`
+    <!doctype html>
+    <html>
+    <head>
+        <style type="text/css">
+            body, div, span, a, pre {
+                font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Arial, '돋움', sans-serif;
+                font-size: 10pt;
+                line-height: 155%;
+                color: #333;
+                white-space: pre-wrap;
+            }
+        </style>
+    </head>
+    <body><pre>${text}</pre></body>
+    </html>`;
+
 module.exports = (context) => {
     const app = context.app;
     const toast = context.toast;
     const matchutil = context.matchutil;
 
-    const ncp = require('copy-paste');
-    const ago = require('s-ago');
-
     const clips = [];
-    const maxClips = 30;
-    const pollInterval = 3000;
-    const clipDisplayChars = 100;
 
     function abbr(num) {
         if (num >= 1000000) {
@@ -42,11 +60,11 @@ module.exports = (context) => {
                     size: clip.length,
                     time: new Date()
                 });
-                if (clips.length > maxClips) {
+                if (clips.length > MAX_CLIPS) {
                     clips.pop();
                 }
             });
-        }, pollInterval);
+        }, POLL_INTERVAL_MS);
         saveClipFn();
     }
 
@@ -66,11 +84,11 @@ module.exports = (context) => {
             }]);
         }
         res.add(results.map((clip, idx) => {
-            let title;
+            let title, isTrimmed;
             if (clip.elem) {
                 // fuzzy match
-                const trimmed = clip.elem.content.trim().substr(0, clipDisplayChars);
-                if (clipDisplayChars === trimmed.length) {
+                const trimmed = clip.elem.content.trim().substr(0, CLIP_DISPLAY_MAX_CHARS);
+                if (CLIP_DISPLAY_MAX_CHARS === trimmed.length) {
                     title = trimmed;  // no bold - it looks strange when trimmed
                 } else {
                     title = matchutil.makeStringBoldHtml(trimmed, clip.matches);
@@ -78,17 +96,27 @@ module.exports = (context) => {
                 idx = clips.indexOf(clip = clip.elem);
             } else {
                 // normal result
-                title = clip.content.substr(0, clipDisplayChars);
+                title = clip.content.substr(0, CLIP_DISPLAY_MAX_CHARS);
             }
-            if (clipDisplayChars === title.length) {
+            isTrimmed = CLIP_DISPLAY_MAX_CHARS === title.length;
+
+            // TODO: remove hack to escape html but keep bolds
+            title = title.replace(/<b>/gi, '%%B%%');
+            title = title.replace(/<\/b>/gi, '%%EB%%');
+            title = title.replace(/</g, '&lt;');
+            title = title.replace(/%%B%%/g, '<b>');
+            title = title.replace(/%%EB%%/g, '</b>');
+
+            if (isTrimmed) {
                 title += '...';
             }
             return {
                 id: idx,
                 payload: '',
-                title: title.replace(/\n/g, ''),
+                title: title.replace(/[\r\n]/g, ''),
                 icon: '#fa fa-clipboard',
-                desc: `Copy to clipboard (${abbr(clip.size)} characters, ${ago(clip.time)})`
+                desc: `Copy to clipboard (${abbr(clip.size)} characters, ${ago(clip.time)})`,
+                preview: isTrimmed
             };
         }));
     }
@@ -107,7 +135,12 @@ module.exports = (context) => {
         }
     }
 
-    return { startup, search, execute };
+    function renderPreview(id, payload, render) {
+        if (payload.length) return;
+        render(PREVIEW_HTML(clips[id].content));
+    }
+
+    return { startup, search, execute, renderPreview };
 };
 
 })();
