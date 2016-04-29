@@ -1,7 +1,7 @@
 # hain-plugin-clipboard
 Restore clipboard history in Windows like you can in Alfred for Mac OS!
 
-![Preview](https://cloud.githubusercontent.com/assets/1255926/14882952/fde8679a-0d6d-11e6-8cae-7b166a755c7b.png)
+![hain-plugin-clipboard](https://cloud.githubusercontent.com/assets/1255926/14877209/cbc39750-0d4d-11e6-9a36-de50526ba813.png)
 
 ## Installation
 
