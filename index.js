@@ -105,12 +105,13 @@ module.exports = (context) => {
             // TODO: remove hack to escape html but keep bolds
             title = title.replace(/<b>/gi, '%%B%%');
             title = title.replace(/<\/b>/gi, '%%EB%%');
+            title = title.replace(/&/g, '&amp;');
             title = title.replace(/</g, '&lt;');
             title = title.replace(/%%B%%/g, '<b>');
             title = title.replace(/%%EB%%/g, '</b>');
 
             if (isTrimmed) {
-                title += '...';
+                title += '&hellip;';
             }
             return {
                 id: idx,
