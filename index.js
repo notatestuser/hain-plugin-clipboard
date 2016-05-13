@@ -2,7 +2,7 @@
 
 (function(){
 
-const ncp = require('copy-paste');
+const ncp = require('copy-paste-win32fix');
 const ago = require('s-ago');
 const eskape = require('eskape');
 
