@@ -11,6 +11,10 @@
 ```
 /hpm install hain-plugin-clipboard
 ```
+then, once installed:
+```
+/reload
+```
 
 ## How it works
 
@@ -25,7 +29,6 @@ This limit will be soon be configurable in the preferences pane!
 
 ## Future work
 
-- Support unicode
-- Support replaying rich text and/or images
 - Add preferences
+- Support replaying rich text and/or images
 - Allow clearing by time range (5 mins, 1 hour, 1 day, ...)
