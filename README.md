@@ -1,13 +1,13 @@
 # hain-plugin-clipboard
 > Restore clipboard history in Windows like in Alfred for Mac OS!
 
-![](https://img.shields.io/npm/v/hain-plugin-clipboard.svg) ![](https://img.shields.io/npm/dt/hain-plugin-clipboard.svg)
+![](https://img.shields.io/npm/v/hain-plugin-clipboard.svg) ![](https://img.shields.io/npm/dm/hain-plugin-clipboard.svg)
 
-![hain-plugin-clipboard](https://cloud.githubusercontent.com/assets/1255926/14877209/cbc39750-0d4d-11e6-9a36-de50526ba813.png)
+![Preview!](https://cloud.githubusercontent.com/assets/1255926/15283851/240ff918-1b80-11e6-9910-9f20db21deb3.png)
 
 ## Installation
 
-Open [hain](https://github.com/appetizermonster/hain) (alt+space), type this command: 
+[Install](https://github.com/appetizermonster/hain/releases) and open [Hain](https://github.com/appetizermonster/hain) (alt+space), then type this command: 
 ```
 /hpm install hain-plugin-clipboard
 ```
