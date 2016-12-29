@@ -6,7 +6,7 @@ const ncp = require('copy-paste-win32fix');
 const ago = require('s-ago');
 const eskape = require('eskape');
 
-const MAX_CLIPS = 30;
+const MAX_CLIPS = 100;
 const POLL_INTERVAL_MS = 3000;
 const DEFAULT_CLIP_DISPLAY_MAX_CHARS = 100;
 const CLIP_PREVIEW_WHEN_MAX_CHARS = 100;
