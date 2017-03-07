@@ -23,7 +23,7 @@ If the current clipboard content is not present in the clipboard history it's ad
 
 ## Limitations
 
-A maximum of 30 entries are saved in order to conserve memory usage.
+A maximum of 100 entries are saved in order to conserve memory usage.
 
 This limit will be soon be configurable in the preferences pane!
 
